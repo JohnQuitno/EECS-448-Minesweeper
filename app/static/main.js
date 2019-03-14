@@ -1,5 +1,11 @@
 var $_id = id => document.getElementById(id);
 
+var skullSymbol = "&#x1F480;";
+var starSymbol = "&#x2b50;";
+var flagSymbol = "&#9873;";
+var spaceSymbol = "&nbsp;";
+var bombSymbol = "&#x1F4A3;";
+
 var rows = 0;
 var cols = 0;
 var mines = 0;
@@ -70,16 +76,16 @@ function updateBoard(data) {
         var id = 'cell-' + i + '-' + j;
         if(data[i*cols+j] == '_'){
             //do nothing
-            $_id(id).innerHTML = '&nbsp;';
-            $_id(id).style.color = '#000000';
+            $_id(id).innerHTML = spaceSymbol;
+            $_id(id).style.color = "black";
         }
         else if(data[i*cols+j] == 'f'){
-            $_id(id).innerHTML = '&#9873';
-            $_id(id).style.color = '#ff0000';
+            $_id(id).innerHTML = flagSymbol;
+            $_id(id).style.color = "red";
         }
         else if(data[i*cols+j] == 'b'){
-            $_id(id).innerHTML = '&#9728';
-            $_id(id).style.color = 'red';
+            $_id(id).innerHTML = bombSymbol;
+            //$_id(id).style.color = 'red';
         }
         else {
             var numAdjacent = data[i*cols+j];
@@ -170,13 +176,13 @@ function rightClick(row,col) {
       data = JSON.parse(data);
       if (data["status"] == "DoneF"){
         var id = 'cell-' + row + '-' + col;
-        if ($_id(id).innerHTML == '&nbsp;') {
-            $_id(id).innerHTML = '&#9873';
-            $_id(id).style.color = '#ff0000';
+        if ($_id(id).innerHTML == spaceSymbol) {
+            $_id(id).innerHTML = flagSymbol;
+            $_id(id).style.color = "red";
         }
         else {
-            $_id(id).innerHTML = '&nbsp;';
-            $_id(id).style.color = '#000000';
+            $_id(id).innerHTML = spaceSymbol;
+            $_id(id).style.color = "black";
         }
       }
     });
@@ -192,11 +198,11 @@ function gameOver(isWon){
     for (let row=0;row<rows;row++)
     for (let col=0;col<cols;col++) {
         var id = 'cell-' + row + '-' + col;
-        if ($_id(id).innerHTML == '&nbsp;') {
+        if ($_id(id).innerHTML == spaceSymbol) {
             if ($_id(id).style.color == 'white')
-                $_id(id).innerHTML = '&#x2b50';
+                $_id(id).innerHTML = starSymbol;
             else {
-                $_id(id).innerHTML = '&#9728';
+                $_id(id).innerHTML = bombSymbol;
                 $_id(id).style.color = 'black';
                 $_id(id).style.backgroundColor = 'green';
             }
@@ -211,7 +217,7 @@ function gameOver(isWon){
         var id = 'cell-' + row + '-' + col;
         if ($_id(id).innerHTML == '&nbsp;')
         if ($_id(id).style.color != 'white') {
-            $_id(id).innerHTML = '&#9760';
+            $_id(id).innerHTML = skullSymbol;
             $_id(id).style.color = 'black';
             $_id(id).style.backgroundColor = 'red';
         }
