@@ -1,26 +1,62 @@
 var $_id = id => document.getElementById(id);
 
+//Visual
 var skullSymbol = "&#x1F480;";
 var starSymbol = "&#x2b50;";
 var flagSymbol = "&#9873;";
 var spaceSymbol = "&nbsp;";
 var bombSymbol = "&#x1F4A3;";
 
+//Board Creation
 var rows = 0;
 var cols = 0;
 var mines = 0;
 var userID = "";
 var ended = 0;
 
+//Timer
+var time = $_id("time")
+var seconds = 0;
+var minutes = 0;
+var hours = 0;
+var t;
+
 window.onload=function()
 {
     resetBoard();
 }
 
+function add()
+{
+    seconds++;
+    if (seconds >= 60)
+    {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60)
+        {
+            minutes = 0;
+            hours++;
+        }
+    }
+
+    time.innerHTML = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+    timer();
+
+}
+function timer()
+{
+    t = setTimeout(add, 1000);
+}
+timer();
 // *** Refined by Giang ***
 function resetBoard(){
+
   const url='api/createBoard';
 
+  time.innerHTML = "00:00:00";
+  seconds = 0; minutes = 0; hours = 0;
+  
   rows = $_id("rows").value;
   cols = $_id("cols").value;
   mines = $_id('mines').value;
@@ -190,6 +226,7 @@ function rightClick(row,col) {
 
 // *** refined by Giang ***
 function gameOver(isWon){
+clearTimeout(t);
   ended=1;
   message = $_id("message");
   if(isWon){
@@ -224,4 +261,5 @@ function gameOver(isWon){
 
     }
   }
+
 }
