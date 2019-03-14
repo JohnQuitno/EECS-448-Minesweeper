@@ -49,6 +49,36 @@ function timer()
     t = setTimeout(add, 1000);
 }
 timer();
+
+//Board Dificuly, curtesy of Hirsh
+/*NOTES:
+The absolute hardest board is one where you everyspace but 1 is a mine.
+The absolutely easiest board is one where there's just one mine.
+Of course, if the board is smaller, then the percentage of mines is higher.
+Dificulty calculated from 1 to 10
+
+*/
+function calculateBoardDificulty(rows, cols, mines)
+{
+    var dificulty;
+    var boardSize = rows*cols;
+    var percentMines = 10*(mines/boardSize);
+    //special case
+    if(mines === 1 && boardSize == 4)
+    {
+     dificulty = 75; //it's pretty much guessing
+    }
+    else if(mines === 1 && percentMines > 10)
+    {
+        dificulty = percentMines + 10; //some slight scaling
+    }
+    else
+    {
+        dificulty = percentMines;
+    }
+    return dificulty;
+}
+
 // *** Refined by Giang ***
 function resetBoard(){
 
@@ -56,7 +86,7 @@ function resetBoard(){
 
   time.innerHTML = "00:00:00";
   seconds = 0; minutes = 0; hours = 0;
-  
+
   rows = $_id("rows").value;
   cols = $_id("cols").value;
   mines = $_id('mines').value;
