@@ -81,8 +81,9 @@ function calculateBoardDificulty(rows, cols, mines)
 
 // *** Refined by Giang ***
 function resetBoard(){
-
   const url='api/createBoard';
+  clearTimeout(t);
+  t = setTimeout(add, 1000);
 
   time.innerHTML = "00:00:00";
   seconds = 0; minutes = 0; hours = 0;
