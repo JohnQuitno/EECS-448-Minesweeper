@@ -258,7 +258,17 @@ function rightClick(row,col) {
 function updateLeaderboard(winTime)
 {
   winTime = parseInt(winTime.substr(0,2) * 3600) + parseInt(winTime.substr(3,2) * 60) + parseInt(winTime.substr(6));
-  winTime = winTime + userID;
+  if(winTime<10)
+  {
+    winTime = "00" + winTime + userID;
+  }
+  else if(winTime<100)
+  {
+    winTime = "0" + winTime + userID;
+  }
+  else {
+    winTime = winTime + userID;
+  }
   const url = 'api/updateLeaderboard';
   $.ajax({
     type: "POST",
