@@ -184,53 +184,6 @@ function updateBoard(data) {
     }
 }
 
-function updateBoard(data) {
-    for(let i =0; i < rows; i++){
-      for(let j = 0; j < cols; j++){
-        var id = 'cell-' + i + '-' + j;
-        if(data[i*cols+j] == '_'){
-            //do nothing
-            $_id(id).innerHTML = spaceSymbol;
-            $_id(id).style.color = "black";
-        }
-        else if(data[i*cols+j] == 'f'){
-            $_id(id).innerHTML = flagSymbol;
-            $_id(id).style.color = "red";
-        }
-        else if(data[i*cols+j] == 'b'){
-            $_id(id).innerHTML = bombSymbol;
-            //$_id(id).style.color = 'red';
-        }
-        else {
-            var numAdjacent = data[i*cols+j];
-            switch (numAdjacent) {
-                case 0:
-                    $_id(id).style.color = 'white'; break;
-                case 1:
-                    $_id(id).style.color = 'blue'; break;
-                case 2:
-                    $_id(id).style.color = 'green'; break;
-                case 3:
-                    $_id(id).style.color = 'red'; break;
-                case 4:
-                    $_id(id).style.color = 'purple'; break;
-                case 5:
-                    $_id(id).style.color = 'maroon'; break;
-                case 6:
-                    $_id(id).style.color = 'turquoise'; break;
-                case 7:
-                    $_id(id).style.color = 'black'; break;
-                case 8:
-                    $_id(id).style.color = 'black'; break;
-            }
-            $_id(id).style.background = '#EEE';
-            if (numAdjacent!=0)
-                $_id(id).innerHTML=numAdjacent;
-        }
-      }
-    }
-}
-
 // *** refined by Giang ***
 function leftClick(row,col) {
     const url = 'api/selectSpace'
