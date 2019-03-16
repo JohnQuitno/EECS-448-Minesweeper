@@ -62,6 +62,28 @@ class Board:
                 if not self.m_board[row][col].isMine:
                     break
             self.m_board[row][col].isMine = True
+            
+    def placeBomb(self):
+        """
+        Places a random mine
+        Pre: 
+            valid x and y coordinates, numMines
+        Post: 
+            mines set randomly around map
+        Args: 
+            int xpos (row), int ypos (column)
+        Returns: 
+            none
+        """
+
+        # initializes a certian number of mines
+        
+        while True:
+            row = random.randint(0,self.m_rows-1)
+            col = random.randint(0,self.m_cols-1)
+            if not self.m_board[row][col].isMine:
+                self.m_board[row][col].isMine = True
+                break
 
     def calculateNearby(self):
         """
@@ -167,7 +189,16 @@ class Board:
         Returns: 
             True if mine is hit, else False
         """
-
+        if self.m_revealed == 0 and self.m_board[row][col].isMine:
+            self.placeBomb()
+            self.m_board[row][col].isMine = False 
+            self.calculateNearby()
+            self.recUnhide(row, col)
+            if self.userWin():
+                self.status = "Win"
+            else:
+                self.status = "Done"
+            return 
         if self.m_board[row][col].isFlagged or not self.m_board[row][col].isHidden:
             self.status = "None"
             return
