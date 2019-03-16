@@ -1,16 +1,19 @@
 body {
-  font-family: helvetica;
+    font-family: helvetica;
+    background-color:	#728CD7 ;
+    color:#0A1E56;
 }
 
 .topBar {
-    background: #c3c3c3;
+    background: #BFCDF5;
     padding: 10px;
 }
 .header {
     text-align: center;
 }
 #title {
-    font-size: 1.7em;
+    font-size: 2.5em;
+    font-family: "Times New Roman", Times, serif;
     margin: 0;
     padding: 0;
 }
@@ -80,18 +83,17 @@ body {
 .cell {
     width: 1.6em;
     height: 1.6em;
-    border: 1px solid black;
-    margin: 0;
+    border: 2px solid white;
     padding: 0;
     font-size: 1.5em;
     text-align: center;
     vertical-align: bottom;
-    background: #666;
+    background: #BFCDF5;
 }
 .cell:hover {
     background: #CCC;
     border-color: #333;
 }
 .cell:active {
-    background: #AAA;
+    background: #767B8A;
 }
