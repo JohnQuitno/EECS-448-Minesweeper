@@ -110,15 +110,15 @@ def api_selectSpace():
 @app.route('/api/updateLeaderboard', methods=['POST'])
 def api_updateLeaderboard():
     """
-    Displays whole board if cheatMode is True, else shows board as normal
-    Pre: 
-        Game with userID exists in games list
+    Displays leaderboard
+    Pre:
+        None
     Post: 
-        Game displays either full board or non-hidden board
+        Leaderboard is displayed
     Args: 
-        int userID, bool cheatMode
+        winTime and userID
     Returns: 
-        Full board if cheatMode is True or board in json if cheatMode is False
+        List of leaderboard times.
     """
     
     s = request.form.to_dict()['json_string']
@@ -136,15 +136,15 @@ def api_updateLeaderboard():
 @app.route('/api/displayLeaderboard', methods=['POST'])
 def api_displayLeaderboard():
     """
-    Displays whole board if cheatMode is True, else shows board as normal
-    Pre: 
-        Game with userID exists in games list
+    Displays leaderboard
+    Pre:
+        None
     Post: 
-        Game displays either full board or non-hidden board
+        Leaderboard is displayed
     Args: 
-        int userID, bool cheatMode
+        none
     Returns: 
-        Full board if cheatMode is True or board in json if cheatMode is False
+        List of leaderboard times.
     """
     return json.dumps(leaderboard)  
         
