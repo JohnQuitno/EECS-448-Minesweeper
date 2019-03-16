@@ -2,11 +2,16 @@ from flask import Flask, render_template, request, Response
 import os.path
 import requests
 import json
+import bisect 
 from Executive import Executive
 
 
 # hold lists of user games
 games = []
+
+# holds the leaderboard
+
+leaderboard = []
 
 
 app = Flask(__name__)
@@ -101,6 +106,50 @@ def api_selectSpace():
             else:
                 i.leftClick(rows, cols)
                 return str(i.getJson(False))
+
+@app.route('/api/updateLeaderboard', methods=['POST'])
+def api_updateLeaderboard():
+    """
+    Displays whole board if cheatMode is True, else shows board as normal
+    Pre: 
+        Game with userID exists in games list
+    Post: 
+        Game displays either full board or non-hidden board
+    Args: 
+        int userID, bool cheatMode
+    Returns: 
+        Full board if cheatMode is True or board in json if cheatMode is False
+    """
+    
+    s = request.form.to_dict()['json_string']
+    # POST with JSON
+    json_acceptable_string = s.replace("'", "\"")
+    d = json.loads(json_acceptable_string)
+    winTime = (d['winTime'])
+    if len(leaderboard) < 10:
+            bisect.insort(leaderboard, winTime)
+    else:
+        bisect.insort(leaderboard, winTime)
+        leaderboard.pop()
+    return json.dumps(leaderboard)
+        
+@app.route('/api/displayLeaderboard', methods=['POST'])
+def api_displayLeaderboard():
+    """
+    Displays whole board if cheatMode is True, else shows board as normal
+    Pre: 
+        Game with userID exists in games list
+    Post: 
+        Game displays either full board or non-hidden board
+    Args: 
+        int userID, bool cheatMode
+    Returns: 
+        Full board if cheatMode is True or board in json if cheatMode is False
+    """
+    return json.dumps(leaderboard)  
+        
+
+            
 
 
 @app.route('/api/cheatMode', methods=['POST'])

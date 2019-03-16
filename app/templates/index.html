@@ -15,7 +15,7 @@
     <form id = "board-def">
       <ul class="nav-list">
         <li class="nav-text">
-          <label for="userIdlabel">UserID: </label>
+          <label for="userIdlabel">Username: </label>
           <input type="text" id="userID" placeholder="Input ID to get a score" required>
         </li>
         <li class="nav-item">
@@ -44,12 +44,18 @@
   <div id="instructions">
       <h2>Instructions:</h2>
       <ul>
+          
           <li>Left-Click a cell to reveal it.</li>
           <li>If the clicked cell contains a mine, you lose </li>
           <li>If the clicked cell does not contain a mine, it will reveal the number of mines adjadent to it</li>
           <li>Right-Click a cell to flag a cell as a mine</li>
           <li>If all non-mines are clicked, you win!</li>
+          <li>If you want to be on the leaderboard you must compete in competitive mode by setting the rows, cols, and mines all to 10s</li>
       </ul>
+  </div>
+  <div id="ldiv">
+      <h2>Leaderboard</h2>
+      <ol id="leaderboard"> </ol>
   </div>
   <script src = "../static/main.js" defer></script>
 </body>

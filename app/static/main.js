@@ -23,6 +23,7 @@ var t;
 
 window.onload=function()
 {
+    displayLeaderboard();
     resetBoard();
 }
 
@@ -87,7 +88,6 @@ function resetBoard(){
 
   time.innerHTML = "00:00:00";
   seconds = 0; minutes = 0; hours = 0;
-
   rows = $_id("rows").value;
   cols = $_id("cols").value;
   mines = $_id('mines').value;
@@ -137,6 +137,53 @@ function createBoard(rows, cols){
 }
 
 // *** refined by Giang ***
+function updateBoard(data) {
+    for(let i =0; i < rows; i++){
+      for(let j = 0; j < cols; j++){
+        var id = 'cell-' + i + '-' + j;
+        if(data[i*cols+j] == '_'){
+            //do nothing
+            $_id(id).innerHTML = spaceSymbol;
+            $_id(id).style.color = "black";
+        }
+        else if(data[i*cols+j] == 'f'){
+            $_id(id).innerHTML = flagSymbol;
+            $_id(id).style.color = "red";
+        }
+        else if(data[i*cols+j] == 'b'){
+            $_id(id).innerHTML = bombSymbol;
+            //$_id(id).style.color = 'red';
+        }
+        else {
+            var numAdjacent = data[i*cols+j];
+            switch (numAdjacent) {
+                case 0:
+                    $_id(id).style.color = 'white'; break;
+                case 1:
+                    $_id(id).style.color = 'blue'; break;
+                case 2:
+                    $_id(id).style.color = 'green'; break;
+                case 3:
+                    $_id(id).style.color = 'red'; break;
+                case 4:
+                    $_id(id).style.color = 'purple'; break;
+                case 5:
+                    $_id(id).style.color = 'maroon'; break;
+                case 6:
+                    $_id(id).style.color = 'turquoise'; break;
+                case 7:
+                    $_id(id).style.color = 'black'; break;
+                case 8:
+                    $_id(id).style.color = 'black'; break;
+            }
+            $_id(id).style.background = '#EEE';
+            if (numAdjacent!=0)
+                $_id(id).innerHTML=numAdjacent;
+        }
+      }
+    }
+}
+
 function updateBoard(data) {
     for(let i =0; i < rows; i++){
       for(let j = 0; j < cols; j++){
@@ -255,12 +302,98 @@ function rightClick(row,col) {
     });
 }
 
+function updateLeaderboard(winTime)
+{
+  winTime = parseInt(winTime.substr(0,2) * 3600) + parseInt(winTime.substr(3,2) * 60) + parseInt(winTime.substr(6));
+  winTime = winTime + userID;
+  const url = 'api/updateLeaderboard';
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: {
+      json_string: JSON.stringify({rows: rows, cols: cols, mines: mines, winTime: winTime})
+    },
+    success: function(response){
+      data = response;
+    },
+  }).done(function() {
+    printLeaderboard(data);
+  })
+}
+
+function displayLeaderboard(winTime)
+{
+  const url = 'api/displayLeaderboard';
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: {
+    },
+    success: function(response){
+      data = response;
+    },
+  }).done(function() {
+    printLeaderboard(data);
+  })
+}
+
+function printLeaderboard(arr)
+{
+  
+  arr = arr.replace(/, /g," ");
+  arr = arr.replace(/"/g,"");
+  arr = arr.replace("[","");
+  arr = arr.replace("]","");
+  let myArray = arr.split(" ");
+  let ol = $_id("leaderboard");
+  while(ol.firstChild) ol.removeChild(ol.firstChild);
+  for(i=0;i<myArray.length;i++){
+    let str = myArray[i];
+    for(let i=0;i<str.length;i++)
+    {
+      if(i==(str.length-1)&&(!isNaN(str[i])))
+      {
+        let sec_num = parseInt(str, 10); // don't forget the second param
+        let hours   = Math.floor(sec_num / 3600);
+        let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        let seconds = sec_num - (hours * 3600) - (minutes * 60);
+        if (hours   < 10) {hours   = "0"+hours;}
+        if (minutes < 10) {minutes = "0"+minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        str = hours+':'+minutes+':'+seconds;
+        console.log(time);
+        str = str + " -- anonymous";
+        break;
+      }
+      if(isNaN(str[i]))
+      {
+        let time = str.slice(0,i);
+        let sec_num = parseInt(time, 10); // don't forget the second param
+        let hours   = Math.floor(sec_num / 3600);
+        let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+        let seconds = sec_num - (hours * 3600) - (minutes * 60);
+        if (hours   < 10) {hours   = "0"+hours;}
+        if (minutes < 10) {minutes = "0"+minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        time = hours+':'+minutes+':'+seconds;
+        console.log(time);
+        str = time + " -- " + str.slice(i);
+        break;
+      }
+    }
+    let li = document.createElement("li");
+    li.appendChild(document.createTextNode(str));
+    ol.appendChild(li);
+  }
+}
+
 // *** refined by Giang ***
 function gameOver(isWon){
-clearTimeout(t);
   ended=1;
   message = $_id("message");
   if(isWon){
+    if((rows==10)&&(cols==10)&&(mines==10))
+      updateLeaderboard(time.innerText);
     message.innerHTML="You've won $1B prize!!";
     message.style.color="green";
     for (let row=0;row<rows;row++)
@@ -292,5 +425,5 @@ clearTimeout(t);
 
     }
   }
-
+  clearTimeout(t);
 }

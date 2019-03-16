@@ -50,9 +50,33 @@ body {
     text-align: center;
     white-space: nowrap;
 }
-#instructions h2 {
-    margin-left: 40px;
+#instructions {
+    margin:0 auto;
+    width:30%;
+    display: block;
+    float: none;
+    position: relative;
+    align-content: center;
 }
+#instructions h2{
+    align-content: center;
+    text-align:center;
+}
+
+
+#ldiv {
+    margin:0 auto;
+    width:20%;
+    display: block;
+    float: none;
+    position: relative;
+    align-content: center;
+}
+#ldiv h2{
+    align-content: center;
+    text-align:center;
+}
+
 .cell {
     width: 1.6em;
     height: 1.6em;
