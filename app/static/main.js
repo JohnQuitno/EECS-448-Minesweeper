@@ -21,12 +21,18 @@ var minutes = 0;
 var hours = 0;
 var t;
 
+
+/**
+    * Creates a new board and an empty leaderboard when the page is loaded
+    */
 window.onload=function()
 {
     displayLeaderboard();
     resetBoard();
 }
-
+/**
+    * Quickly sets the time variables
+    */
 function add()
 {
     seconds++;
@@ -45,13 +51,19 @@ function add()
     timer();
 
 }
+
+/**
+    * Increments add every 1 second
+    */
 function timer()
 {
     t = setTimeout(add, 1000);
 }
 timer();
 
-
+/**
+    * Gets the values given by the user, assures proper input, and if everything looks okay, it runs createBoard
+    */
 function resetBoard(){
   const url='api/createBoard';
   clearTimeout(t);
@@ -91,6 +103,11 @@ function resetBoard(){
   createBoard(rows, cols);
 }
 
+/**
+    * Creates the board.
+    * @param {number} rows - The number of rows in the grid.
+    * @param {number} cols - The number of columns in the grid.
+    */
 function createBoard(rows, cols){
   board.innerHTML="";
   for (let row=0;row<rows;row++) {
@@ -105,7 +122,10 @@ function createBoard(rows, cols){
     }
   }
 }
-
+/**
+    * Updates the front-end board
+    * @param {string} data - returns a string from the server side of what value is on a cell
+    */
 function updateBoard(data) {
     for(let i =0; i < rows; i++){
       for(let j = 0; j < cols; j++){
@@ -152,7 +172,11 @@ function updateBoard(data) {
       }
     }
 }
-
+/**
+    * Handles backend of when a cell is left clicked
+    * @param {number} rows - The row clicked on
+    * @param {number} cols - The col clicked on
+    */
 function leftClick(row,col) {
     const url = 'api/selectSpace'
     if (ended) {
@@ -185,7 +209,11 @@ function leftClick(row,col) {
         }
     });
 }
-
+/**
+    * Handles backend of when a cell is right clicked
+    * @param {number} rows - The row clicked on
+    * @param {number} cols - The col clicked on
+    */
 function rightClick(row,col) {
     const url = 'api/selectSpace';
     if (ended) {
@@ -221,7 +249,11 @@ function rightClick(row,col) {
       }
     });
 }
-
+/**
+    * Updates the backend leaderboard
+    * @constructor
+    * @param {string} winTime - The time it took for the user to win
+    */
 function updateLeaderboard(winTime)
 {
   winTime = parseInt(winTime.substr(0,2) * 3600) + parseInt(winTime.substr(3,2) * 60) + parseInt(winTime.substr(6));
@@ -251,6 +283,11 @@ function updateLeaderboard(winTime)
   })
 }
 
+/**
+    * Assures proper values
+    * @constructor
+    * @param {string} winTime - The time it took for the user to win
+    */
 function displayLeaderboard(winTime)
 {
   const url = 'api/displayLeaderboard';
@@ -266,7 +303,11 @@ function displayLeaderboard(winTime)
     printLeaderboard(data);
   })
 }
-
+/**
+    * Updates the frontend leaderboard
+    * @constructor
+    * @param {string} winTime - The time it took for the user to win
+    */
 function printLeaderboard(arr)
 {
 
@@ -317,6 +358,11 @@ function printLeaderboard(arr)
   }
 }
 
+/**
+    * Updates the frontend to let the user know they won the game
+    * @constructor
+    * @param {bool} isWon - Whether the game has ended in a win state
+    */
 function gameOver(isWon){
   ended=1;
   message = $_id("message");
