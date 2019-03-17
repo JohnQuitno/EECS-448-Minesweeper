@@ -35,7 +35,6 @@ class Executive:
         self.m_userID = userID
         return
 
-    # *** included by Giang ***
     def reset(self, rows, cols, numMines, userID):
 
         if rows < 2 or cols < 2:
@@ -48,7 +47,6 @@ class Executive:
 
         return
 
-    # *** refined by Giang ***
     def leftClick(self, row, col):
         """
         Handles left click event - clicking on a new space
@@ -64,7 +62,6 @@ class Executive:
 
         self.m_board.selectSpace(row, col)
 
-    # *** refined by Giang
     def rightClick(self, row, col):
         """
         Handles right click event - toggling flag

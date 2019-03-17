@@ -51,36 +51,7 @@ function timer()
 }
 timer();
 
-//Board Dificuly, curtesy of Hirsh
-/*NOTES:
-The absolute hardest board is one where you everyspace but 1 is a mine.
-The absolutely easiest board is one where there's just one mine.
-Of course, if the board is smaller, then the percentage of mines is higher.
-Dificulty calculated from 1 to 10
 
-*/
-function calculateBoardDificulty(rows, cols, mines)
-{
-    var dificulty;
-    var boardSize = rows*cols;
-    var percentMines = 10*(mines/boardSize);
-    //special case
-    if(mines === 1 && boardSize == 4)
-    {
-     dificulty = 75; //it's pretty much guessing
-    }
-    else if(mines === 1 && percentMines > 10)
-    {
-        dificulty = percentMines + 10; //some slight scaling
-    }
-    else
-    {
-        dificulty = percentMines;
-    }
-    return dificulty;
-}
-
-// *** Refined by Giang ***
 function resetBoard(){
   const url='api/createBoard';
   clearTimeout(t);
@@ -120,7 +91,6 @@ function resetBoard(){
   createBoard(rows, cols);
 }
 
-// *** Refined by Giang ***
 function createBoard(rows, cols){
   board.innerHTML="";
   for (let row=0;row<rows;row++) {
@@ -136,7 +106,6 @@ function createBoard(rows, cols){
   }
 }
 
-// *** refined by Giang ***
 function updateBoard(data) {
     for(let i =0; i < rows; i++){
       for(let j = 0; j < cols; j++){
@@ -184,7 +153,6 @@ function updateBoard(data) {
     }
 }
 
-// *** refined by Giang ***
 function leftClick(row,col) {
     const url = 'api/selectSpace'
     if (ended) {
@@ -218,7 +186,6 @@ function leftClick(row,col) {
     });
 }
 
-// *** refined by Giang ***
 function rightClick(row,col) {
     const url = 'api/selectSpace';
     if (ended) {
@@ -302,7 +269,7 @@ function displayLeaderboard(winTime)
 
 function printLeaderboard(arr)
 {
-  
+
   arr = arr.replace(/, /g," ");
   arr = arr.replace(/"/g,"");
   arr = arr.replace("[","");
@@ -350,7 +317,6 @@ function printLeaderboard(arr)
   }
 }
 
-// *** refined by Giang ***
 function gameOver(isWon){
   ended=1;
   message = $_id("message");

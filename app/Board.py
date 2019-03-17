@@ -9,18 +9,17 @@ class Board:
     Handles all things related to the game and is called by executive
     """
 
-    # *** refined by Giang ***
     # initializes the board
     def __init__(self, rows, cols, mines):
         """
         Initializes Board object
-        Pre: 
+        Pre:
             valid parameters
-        Post: 
-            Initializes member variables based on user input 
-        Args: 
+        Post:
+            Initializes member variables based on user input
+        Args:
             int numRows, int numCols, int numMines
-        Returns: 
+        Returns:
             No return
         """
 
@@ -39,18 +38,17 @@ class Board:
         self.placeBombs()
         self.calculateNearby()
 
-    # *** refined by Giang ***
     # places all mines around the first space stepped on
     def placeBombs(self):
         """
         Places mines randomly around map
-        Pre: 
+        Pre:
             valid x and y coordinates, numMines
-        Post: 
+        Post:
             mines set randomly around map
-        Args: 
+        Args:
             int xpos (row), int ypos (column)
-        Returns: 
+        Returns:
             none
         """
 
@@ -62,22 +60,22 @@ class Board:
                 if not self.m_board[row][col].isMine:
                     break
             self.m_board[row][col].isMine = True
-            
+
     def placeBomb(self):
         """
         Places a random mine
-        Pre: 
+        Pre:
             valid x and y coordinates, numMines
-        Post: 
+        Post:
             mines set randomly around map
-        Args: 
+        Args:
             int xpos (row), int ypos (column)
-        Returns: 
+        Returns:
             none
         """
 
         # initializes a certian number of mines
-        
+
         while True:
             row = random.randint(0,self.m_rows-1)
             col = random.randint(0,self.m_cols-1)
@@ -88,13 +86,13 @@ class Board:
     def calculateNearby(self):
         """
         Calculates quantity of nearby mines for all mines
-        Pre: 
+        Pre:
             initialized boardspaces
-        Post: 
+        Post:
             each boardspace in board object now knows have many mines surround it
-        Args: 
+        Args:
             none
-        Returns: 
+        Returns:
             none
         """
 
@@ -106,13 +104,13 @@ class Board:
     def calcAround(self, xpos, ypos):
         """
         Determines nearby quantity of mines for a single board space
-        Pre: 
+        Pre:
             valid x and y coordinates
-        Post: 
+        Post:
             individual boardspace knows how many mines surround it
-        Args: 
+        Args:
             int xpos (row), int ypos (column)
-        Returns: 
+        Returns:
             integer representing nearby mine count
         """
 
@@ -124,17 +122,16 @@ class Board:
 
         return count
 
-    # *** refined by Giang ***
     def recUnhide(self, xpos, ypos):
         """
         Recursively unhide spaces until there are mines surrounding it
-        Pre: 
+        Pre:
             valid x and y coordinates
-        Post: 
+        Post:
             Boardspaces are unhidden until there are nearby mines
-        Args: 
+        Args:
             int xpos (row), int ypos (column)
-        Returns: 
+        Returns:
             No return
         """
         if self.m_board[xpos][ypos].isFlagged or self.m_board[xpos][ypos].isMine or not self.m_board[xpos][ypos].isHidden:
@@ -152,20 +149,19 @@ class Board:
     # -------------------------
     # methods for Executive to call (excluding initialize)
 
-    # *** refined by Giang ***
     # toggleFlag Space if valid
     def toggleFlagSpace(self, row, col):
         """
         Toggles flag on/off
-        Pre: 
+        Pre:
             valid x and y coordinates, has flags remaining
-        Post: 
+        Post:
             Boardspace flag toggled on/off
-        Args: 
+        Args:
             int xpos (row), int ypos (column)
-        Returns: 
+        Returns:
             No return
-        Raise: 
+        Raise:
             RuntimeError if no flags remain
         """
         if not self.m_board[row][col].isHidden:
@@ -174,31 +170,30 @@ class Board:
             self.m_board[row][col].isFlagged = not self.m_board[row][col].isFlagged
             self.status = "DoneF"
 
-    # *** refined by Giang ***
     # user clicks a spot
     # returns true if a mine is hit, else false
     def selectSpace(self, row, col):
         """
         Select a space to reveal
-        Pre: 
+        Pre:
             valid x and y coordinates
-        Post: 
+        Post:
             Either loses game (mine hit) or unhides selected boardspace
-        Args: 
+        Args:
             int xpos (row), int ypos (column)
-        Returns: 
+        Returns:
             True if mine is hit, else False
         """
         if self.m_revealed == 0 and self.m_board[row][col].isMine:
             self.placeBomb()
-            self.m_board[row][col].isMine = False 
+            self.m_board[row][col].isMine = False
             self.calculateNearby()
             self.recUnhide(row, col)
             if self.userWin():
                 self.status = "Win"
             else:
                 self.status = "Done"
-            return 
+            return
         if self.m_board[row][col].isFlagged or not self.m_board[row][col].isHidden:
             self.status = "None"
             return
@@ -216,18 +211,17 @@ class Board:
             else:
                 self.status = "Done"
 
-    # *** refined by Giang ***
     # check if the user has flagged all mines - true if user has won, else false
     def userWin(self):
         """
         Check if the user has flagged all mines, which is victory
-        Pre: 
+        Pre:
             none
-        Post: 
+        Post:
             none
-        Args: 
+        Args:
             none
-        Returns: 
+        Returns:
             True if user has won, else False
         """
 
@@ -236,19 +230,18 @@ class Board:
         else:
             return False
 
-    # *** refined by Giang ***
     def boardToJson(self):
         """
         Generates json to pass to front-end
-        Pre: 
+        Pre:
             none
-        Post: 
+        Post:
             json file generated
-        Args: 
+        Args:
             none
-        Returns: 
+        Returns:
             json file with all board information
- 
+
         """
 
         myBoard = {}
@@ -268,13 +261,13 @@ class Board:
     def cheatModeBoardToJson(self):
         """
         Generates full json to pass to front-end
-        Pre: 
+        Pre:
             none
-        Post: 
+        Post:
             json string generated
-        Args: 
+        Args:
             none
-        Returns: 
+        Returns:
             json string with all board information
         """
 
