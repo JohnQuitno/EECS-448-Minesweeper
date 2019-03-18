@@ -258,6 +258,20 @@ class Board:
 
         return myBoard
 
+    def cheatMode():
+        """
+        Displays entire board upon button press
+        Pre:
+
+        Post:
+
+        Args:
+
+        Returns:
+
+        """
+
+
     def cheatModeBoardToJson(self):
         """
         Generates full json to pass to front-end

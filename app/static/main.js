@@ -303,6 +303,8 @@ function displayLeaderboard(winTime)
     printLeaderboard(data);
   })
 }
+
+
 /**
     * Updates the frontend leaderboard
     * @constructor
@@ -357,6 +359,17 @@ function printLeaderboard(arr)
     ol.appendChild(li);
   }
 }
+
+
+/**
+    * Creates and adds functionality for Cheat Mode button
+    * @constructor
+    * @param
+    */
+function cheatModeButton(){
+
+}
+
 
 /**
     * Updates the frontend to let the user know they won the game
