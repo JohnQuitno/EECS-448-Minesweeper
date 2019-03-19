@@ -175,9 +175,9 @@ def api_cheatmode():
         if i.getUserID() == userID:
             # Reveal board cheat mode
             if cheatMode is True:
-                return str(i.getJson(True))
+                return json.dumps(i.getJson(True))
             else:
-                return str(i.getJson(False))
+                return json.dumps(i.getJson(False))
 
 
 def handle_request(request_data):

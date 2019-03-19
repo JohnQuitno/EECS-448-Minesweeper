@@ -258,19 +258,6 @@ class Board:
 
         return myBoard
 
-    def cheatMode():
-        """
-        Displays entire board upon button press
-        Pre:
-
-        Post:
-
-        Args:
-
-        Returns:
-
-        """
-
 
     def cheatModeBoardToJson(self):
         """
@@ -287,6 +274,7 @@ class Board:
 
         myBoard = {}
         space = 0
+        myBoard.update({'status': self.status})
         for x in range(0, self.m_rows):
             for y in range(0, self.m_cols):
                 myBoard.update({space: showSpace(self.m_board[x][y])})

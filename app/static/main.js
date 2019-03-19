@@ -30,6 +30,8 @@ window.onload=function()
     displayLeaderboard();
     resetBoard();
 }
+
+
 /**
     * Quickly sets the time variables
     */
@@ -52,6 +54,7 @@ function add()
 
 }
 
+
 /**
     * Increments add every 1 second
     */
@@ -60,6 +63,7 @@ function timer()
     t = setTimeout(add, 1000);
 }
 timer();
+
 
 /**
     * Gets the values given by the user, assures proper input, and if everything looks okay, it runs createBoard
@@ -103,6 +107,7 @@ function resetBoard(){
   createBoard(rows, cols);
 }
 
+
 /**
     * Creates the board.
     * @param {number} rows - The number of rows in the grid.
@@ -122,6 +127,8 @@ function createBoard(rows, cols){
     }
   }
 }
+
+
 /**
     * Updates the front-end board
     * @param {string} data - returns a string from the server side of what value is on a cell
@@ -172,6 +179,8 @@ function updateBoard(data) {
       }
     }
 }
+
+
 /**
     * Handles backend of when a cell is left clicked
     * @param {number} rows - The row clicked on
@@ -209,6 +218,8 @@ function leftClick(row,col) {
         }
     });
 }
+
+
 /**
     * Handles backend of when a cell is right clicked
     * @param {number} rows - The row clicked on
@@ -249,6 +260,8 @@ function rightClick(row,col) {
       }
     });
 }
+
+
 /**
     * Updates the backend leaderboard
     * @constructor
@@ -283,6 +296,7 @@ function updateLeaderboard(winTime)
   })
 }
 
+
 /**
     * Assures proper values
     * @constructor
@@ -312,7 +326,6 @@ function displayLeaderboard(winTime)
     */
 function printLeaderboard(arr)
 {
-
   arr = arr.replace(/, /g," ");
   arr = arr.replace(/"/g,"");
   arr = arr.replace("[","");
@@ -367,7 +380,35 @@ function printLeaderboard(arr)
     * @param
     */
 function cheatModeButton(){
-
+  const url = 'api/cheatMode'
+  if (ended) {
+      ended++;
+      if (ended>3) alert("C'mon, the game ended. There's nothing you can do.");
+      return;
+  }
+  let data;
+  //send row and col value in a string with JSON to url
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: {
+      json_string: JSON.stringify({cheatMode: true, userID: userID})
+    },
+    success: function(response){
+      data = response;
+    },
+    dataType: 'text'
+  }).done(function() {
+      data = data.replace(/'/g, "\"");
+      data = JSON.parse(data);
+      if (data["status"] != "None") updateBoard(data);
+      if (data["status"] == "Win") {
+          gameOver(true);
+      }
+      if (data["status"] == "Lose") {
+          gameOver(false);
+      }
+  });
 }
 
 
