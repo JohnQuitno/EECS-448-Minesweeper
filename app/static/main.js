@@ -145,10 +145,12 @@ function updateBoard(data) {
             $_id(id).style.color = "black";
         }
         else if(data[i*cols+j] == 'f'){
+            $_id(id).style.background = '#BFCDF5';
             $_id(id).innerHTML = flagSymbol;
             $_id(id).style.color = "red";
         }
         else if(data[i*cols+j] == 'b'){
+            $_id(id).style.background = '#BFCDF5';
             $_id(id).innerHTML = bombSymbol;
             //$_id(id).style.color = 'red';
         }
@@ -416,6 +418,7 @@ function cheatModeToggle(){
   }).done(function() {
       data = data.replace(/'/g, "\"");
       data = JSON.parse(data);
+      console.log(data);
       updateBoard(data);
   });
 }

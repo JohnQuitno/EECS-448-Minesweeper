@@ -275,10 +275,11 @@ class Board:
 
         myBoard = {}
         space = 0
-        myBoard.update({'status': "cheat"})
+        self.status="Done"
+        myBoard.update({'status': self.status})
         for x in range(0, self.m_rows):
             for y in range(0, self.m_cols):
-                myBoard.update({space: showSpace(self.m_board[x][y])})
+                myBoard.update({str(space): showSpace(self.m_board[x][y])})
                 space += 1
         return myBoard
 
