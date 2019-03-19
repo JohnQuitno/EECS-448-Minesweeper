@@ -184,16 +184,17 @@ class Board:
         Returns:
             True if mine is hit, else False
         """
-        if self.m_revealed == 0 and self.m_board[row][col].isMine:
-            self.placeBomb()
-            self.m_board[row][col].isMine = False
-            self.calculateNearby()
-            self.recUnhide(row, col)
-            if self.userWin():
-                self.status = "Win"
-            else:
-                self.status = "Done"
-            return
+        # if self.m_revealed == 0 and self.m_board[row][col].isMine:
+        #     self.placeBomb()
+        #     self.m_board[row][col].isMine = False
+        #     self.calculateNearby()
+        #     self.recUnhide(row, col)
+        #     if self.userWin():
+        #         self.status = "Win"
+        #     else:
+        #         self.status = "Done"
+        #     return
+
         if self.m_board[row][col].isFlagged or not self.m_board[row][col].isHidden:
             self.status = "None"
             return
@@ -274,7 +275,7 @@ class Board:
 
         myBoard = {}
         space = 0
-        myBoard.update({'status': self.status})
+        myBoard.update({'status': "cheat"})
         for x in range(0, self.m_rows):
             for y in range(0, self.m_cols):
                 myBoard.update({space: showSpace(self.m_board[x][y])})

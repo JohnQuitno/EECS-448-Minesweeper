@@ -13,6 +13,7 @@ var cols = 0;
 var mines = 0;
 var userID = "";
 var ended = 0;
+var isCheat = false;
 
 //Timer
 var time = $_id("time")
@@ -195,6 +196,11 @@ function leftClick(row,col) {
         return;
     }
 
+    if (isCheat) {
+        alert("You have to turn off the cheat mode before continuing the game!!");
+        return;
+    }
+
     let data;
     //send row and col value in a string with JSON to url
     $.ajax({
@@ -231,6 +237,11 @@ function rightClick(row,col) {
     if (ended) {
         ended++;
         if (ended>3) alert("C'mon, the game ended. There's nothing you can do.");
+        return;
+    }
+
+    if (isCheat) {
+        alert("You have to turn off the cheat mode before continuing the game!!");
         return;
     }
 
@@ -380,20 +391,23 @@ function printLeaderboard(arr)
     * @constructor
     * @param
     */
-function cheatModeOn(){
+function cheatModeToggle(){
   const url = 'api/cheatMode'
   if (ended) {
       ended++;
       if (ended>3) alert("C'mon, the game ended. There's nothing you can do.");
       return;
   }
+  isCheat = !isCheat;
+  if (isCheat) $_id("CheatModeBtn").innerHTML = "Cheat Mode On";
+  else $_id("CheatModeBtn").innerHTML = "Cheat Mode Off";
   let data;
   //send row and col value in a string with JSON to url
   $.ajax({
     type: "POST",
     url: url,
     data: {
-      json_string: JSON.stringify({cheatMode: true, userID: userID})
+      json_string: JSON.stringify({cheatMode: isCheat, userID: userID})
     },
     success: function(response){
       data = response;
@@ -402,51 +416,7 @@ function cheatModeOn(){
   }).done(function() {
       data = data.replace(/'/g, "\"");
       data = JSON.parse(data);
-      if (data["status"] != "None") updateBoard(data);
-      if (data["status"] == "Win") {
-          gameOver(true);
-      }
-      if (data["status"] == "Lose") {
-          gameOver(false);
-      }
-  });
-}
-
-
-/**
-    * Creates and adds functionality for Cheat Mode button
-    * @constructor
-    * @param
-    */
-function cheatModeOff(){
-  const url = 'api/cheatMode'
-  if (ended) {
-      ended++;
-      if (ended>3) alert("C'mon, the game ended. There's nothing you can do.");
-      return;
-  }
-  let data;
-  //send row and col value in a string with JSON to url
-  $.ajax({
-    type: "POST",
-    url: url,
-    data: {
-      json_string: JSON.stringify({cheatMode: false, userID: userID})
-    },
-    success: function(response){
-      data = response;
-    },
-    dataType: 'text'
-  }).done(function() {
-      data = data.replace(/'/g, "\"");
-      data = JSON.parse(data);
-      if (data["status"] != "None") updateBoard(data);
-      if (data["status"] == "Win") {
-          gameOver(true);
-      }
-      if (data["status"] == "Lose") {
-          gameOver(false);
-      }
+      updateBoard(data);
   });
 }
 
