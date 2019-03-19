@@ -138,6 +138,7 @@ function updateBoard(data) {
       for(let j = 0; j < cols; j++){
         var id = 'cell-' + i + '-' + j;
         if(data[i*cols+j] == '_'){
+            $_id(id).style.background = '#BFCDF5';
             //do nothing
             $_id(id).innerHTML = spaceSymbol;
             $_id(id).style.color = "black";
@@ -379,7 +380,7 @@ function printLeaderboard(arr)
     * @constructor
     * @param
     */
-function cheatModeButton(){
+function cheatModeOn(){
   const url = 'api/cheatMode'
   if (ended) {
       ended++;
@@ -393,6 +394,44 @@ function cheatModeButton(){
     url: url,
     data: {
       json_string: JSON.stringify({cheatMode: true, userID: userID})
+    },
+    success: function(response){
+      data = response;
+    },
+    dataType: 'text'
+  }).done(function() {
+      data = data.replace(/'/g, "\"");
+      data = JSON.parse(data);
+      if (data["status"] != "None") updateBoard(data);
+      if (data["status"] == "Win") {
+          gameOver(true);
+      }
+      if (data["status"] == "Lose") {
+          gameOver(false);
+      }
+  });
+}
+
+
+/**
+    * Creates and adds functionality for Cheat Mode button
+    * @constructor
+    * @param
+    */
+function cheatModeOff(){
+  const url = 'api/cheatMode'
+  if (ended) {
+      ended++;
+      if (ended>3) alert("C'mon, the game ended. There's nothing you can do.");
+      return;
+  }
+  let data;
+  //send row and col value in a string with JSON to url
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: {
+      json_string: JSON.stringify({cheatMode: false, userID: userID})
     },
     success: function(response){
       data = response;
